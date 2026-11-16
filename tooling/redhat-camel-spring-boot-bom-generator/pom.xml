@@ -71,6 +71,24 @@
 
             </plugin>
             <plugin>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-spring-boot-generator-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <executions>
+                    <execution>
+                        <id>export-full-platform-bom</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>export-flattened-bom</goal>
+                        </goals>
+                        <configuration>
+                            <sourcePom>${project.build.directory}/redhat-camel-spring-boot-bom/pom.xml</sourcePom>
+                            <outputFile>${project.build.directory}/redhat-camel-spring-boot-bom/flattened-full-pom.xml</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
                 <executions>
@@ -86,6 +104,22 @@
                             <artifactId>camel-spring-boot-bom</artifactId>
                             <version>${project.version}</version>
                             <packaging>pom</packaging>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-flattened-platform-bom</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.build.directory}/redhat-camel-spring-boot-bom/flattened-full-pom.xml</file>
+                            <groupId>com.redhat.camel.springboot.platform</groupId>
+                            <artifactId>camel-spring-boot-bom</artifactId>
+                            <version>${project.version}</version>
+                            <packaging>xml</packaging>
+                            <classifier>flattened-full</classifier>
+                            <generatePom>false</generatePom>
                         </configuration>
                     </execution>
                 </executions>
@@ -113,6 +147,9 @@
                                     <artifactId>camel-spring-boot-bom</artifactId>
                                     <version>${project.version}</version>
                                     <packaging>pom</packaging>
+                                    <files>${project.build.directory}/redhat-camel-spring-boot-bom/flattened-full-pom.xml</files>
+                                    <types>xml</types>
+                                    <classifiers>flattened-full</classifiers>
                                     <url>${AProxDeployUrl}</url>
                                     <repositoryId>indy-mvn</repositoryId>
                                 </configuration>

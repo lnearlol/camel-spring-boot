@@ -254,4 +254,43 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>flattened-bom-it</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <configuration>
+                            <projectsDirectory>src/it</projectsDirectory>
+                            <cloneProjectsTo>${project.build.directory}/it-projects</cloneProjectsTo>
+                            <localRepositoryPath>${project.build.directory}/it-repository</localRepositoryPath>
+                            <postBuildHookScript>verify</postBuildHookScript>
+                            <skipInstallation>false</skipInstallation>
+                            <skipInvocation>false</skipInvocation>
+                            <failIfNoProjects>true</failIfNoProjects>
+                            <ignoreFailures>false</ignoreFailures>
+                            <mavenOpts>-Xmx512m</mavenOpts>
+                            <goals>
+                                <goal>clean</goal>
+                                <goal>package</goal>
+                            </goals>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>flattened-bom-integration</id>
+                                <goals>
+                                    <goal>install</goal>
+                                    <goal>run</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
